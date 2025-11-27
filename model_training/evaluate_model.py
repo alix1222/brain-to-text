@@ -261,7 +261,8 @@ lm_results = {
     'true_sentence': [],
     'pred_sentence' : [],
     'nbest_sentences': [],
-    'nbest_scores': []
+    'nbest_scores': [],
+    'raw_phonemes': [],
 }
 
 # loop through all trials and put logits into the remote language model to get text predictions
@@ -312,6 +313,8 @@ with tqdm(total=total_test_trials, desc='Running remote language model', unit='t
             lm_results['nbest_sentences'].append(nbest_sents)
             lm_results['nbest_scores'].append(nbest_scores)
 
+            raw_phoneme_seq = " ".join(test_data[session]['pred_seq'][trial])
+            lm_results['raw_phonemes'].append(raw_phoneme_seq)
 
             # store results
             lm_results['session'].append(session)
