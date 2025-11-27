@@ -311,9 +311,15 @@ if eval_type == 'val':
     ids = list(range(len(lm_results['pred_sentence'])))
     true_sentences = lm_results['true_sentence']
 
+    raw_phonemes_list = lm_results['raw_phonemes']
+
     expanded_rows = []
-    for i, (true_s, nbest_sents, nbest_scores) in enumerate(zip(
-        true_sentences, lm_results['nbest_sentences'], lm_results['nbest_scores']
+    
+    for i, (true_s, nbest_sents, nbest_scores, raw_phones) in enumerate(zip(
+        true_sentences, 
+        lm_results['nbest_sentences'], 
+        lm_results['nbest_scores'], 
+        raw_phonemes_list 
     )):
         for rank, (cand_sent, cand_score) in enumerate(zip(nbest_sents, nbest_scores)):
             if rank >= N: 
@@ -324,7 +330,8 @@ if eval_type == 'val':
                 'true_sentence': true_s,
                 'candidate_rank': rank + 1,
                 'candidate_sentence': cand_sent,
-                'candidate_score': cand_score
+                'candidate_score': cand_score,
+                'source_phonemes': raw_phones 
             })
 
     df_out = pd.DataFrame(expanded_rows)
